@@ -2,7 +2,7 @@
 
 [![N|Solid](https://amandeepmittal.gallerycdn.vsassets.io/extensions/amandeepmittal/expressjs/2.0.0/1509881293872/Microsoft.VisualStudio.Services.Icons.Default)](https://amandeepmittal.gallerycdn.vsassets.io/extensions/amandeepmittal/expressjs/2.0.0/1509881293872/Microsoft.VisualStudio.Services.Icons.Default)
 
-A tiny minimal code snippet to kickstart a Node.JS middleware backend as re-usable code
+A tiny minimal code snippet to kickstart a Node.JS middleware backend as re-usable code.
 
 ## Download and Installation
 
