@@ -66,7 +66,8 @@ app.post('/scan', upload.single('card'), function(req, res, next) {
     // } else if(expect(req.file.mimetype).to.be.oneOf(['image/jpeg','image/png'])){
 
         // uploadFile(reqM);
-        console.log("EVENT : " + JSON.stringify(req.file));
+        // console.log("EVENT : " + JSON.stringify(req.file));
+        console.log("Code change test")
         res.status(200).json({
             upload : true,
             success : true,
