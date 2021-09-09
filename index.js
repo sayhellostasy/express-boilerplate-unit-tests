@@ -75,7 +75,6 @@ app.post('/scan', upload.single('card'), function(req, res, next) {
             status_code: 200
           })
     // }
-
 });
 //Route for file uploads
 
