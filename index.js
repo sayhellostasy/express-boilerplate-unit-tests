@@ -76,7 +76,6 @@ app.post('/scan', upload.single('card'), function(req, res, next) {
           })
     // }
 
-
 });
 //Route for file uploads
 
