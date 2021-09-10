@@ -19,7 +19,7 @@ This boilerplate uses uses a number of open source packages to work properly. Th
 
 ### Installation
 
-Express requires [Node.js](https://nodejs.org/) v5+ to run..
+Express requires [Node.js](https://nodejs.org/) v5+ to run.
 
 Install the dependencies and devDependencies and start the server.
 
