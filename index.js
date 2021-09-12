@@ -16,7 +16,7 @@ require('dotenv').config()
 //Configuring the Express Middleware
 var app = express();
 
-var accessLogStream = fs.createWriteStream(__dirname + '/logs/access.log', {flags: 'a'})
+// var accessLogStream = fs.createWriteStream(__dirname + '/logs/access.log', {flags: 'a'})
 
 //Configure Morgan's Logging Formats
 // app.use(morgan('common', {stream: accessLogStream}))    //UNCOMMENT TO ENABLE FILE LOGGING

@@ -69,5 +69,5 @@ describe('Card Application', function() {
               done();
                 });
             });
-  
+            
   });
