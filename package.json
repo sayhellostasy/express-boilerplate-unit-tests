@@ -1,22 +1,22 @@
 {
-  "name": "hex-ar-brochure",
+  "name": "nodejs-express-middleware",
   "version": "1.0.0",
-  "description": "server side api for ar brocher",
+  "description": "Sample boilerplace node and express middleware",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "node ./node_modules/mocha/bin/mocha --exit"
+    "test": "node ./node_modules/mocha/bin/mocha --timeout 10000 --exit"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KenrickV-Hexaware/Hex-AR-Brochure.git"
+    "url": "git+https://github.com/pourabkarchaudhuri/express-boilerplate-unit-tests.git"
   },
-  "author": "Kenrick Vaz, Pourab Karchaudhuri",
+  "author": "Pourab Karchaudhuri",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KenrickV-Hexaware/Hex-AR-Brochure/issues"
+    "url": "https://github.com/pourabkarchaudhuri/express-boilerplate-unit-tests/issues"
   },
-  "homepage": "https://github.com/KenrickV-Hexaware/Hex-AR-Brochure#readme",
+  "homepage": "https://github.com/pourabkarchaudhuri/express-boilerplate-unit-tests#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "chai": "^4.3.4",
