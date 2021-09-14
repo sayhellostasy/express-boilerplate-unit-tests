@@ -3,13 +3,15 @@ pipeline {
   agent { label 'slave1' }
 //   tools {nodejs "latest"}
   stages {
-    stage('preflight') {
+    
+    stage('Preflight') {
       steps {
         echo sh(returnStdout: true, script: 'env')
         sh 'node -v'
+        def s()
       }
     }
-    stage('build') {
+    stage('Build') {
       steps {
         sh 'npm --version'
         // sh 'git log --reverse -1'
@@ -18,10 +20,15 @@ pipeline {
         sh 'npm install'
       }
     }
-    stage('test') {
+    stage('Test') {
       steps {
         sh 'npm test'
       }
     }
   }
+  post {
+        always {
+            emailext body: "${DEFAULT_SUBJECT}", recipientProviders: "${DEFAULT_RECIPIENTS}", subject: "${DEFAULT_CONTENT}"
+        }
+    }
 }
