@@ -3,13 +3,9 @@ pipeline {
   agent { label 'slave1' }
 //   tools {nodejs "latest"}
   stages {
-    stage('Start') {
-      steps {
-        emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-      }
-    }
     stage('Preflight') {
       steps {
+        // emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
         echo sh(returnStdout: true, script: 'env')
         sh 'node -v'
       }
@@ -26,13 +22,17 @@ pipeline {
     stage('Test') {
       steps {
         sh 'npm test'
+        // emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+      }
+    }
+    stage('Deploy Staging') {
+      steps {
+            azureWebAppPublish appName: "middleware-staging",
+            azureCredentialsId: "azure-staging-deploy",
+            publishType: "file",
+            filePath: "**/*.*",
+            resourceGroup: "bits-assignment"
       }
     }
   }
-  post {
-        always {
-            echo 'Sending Notification!'
-            emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: "${env.DEFAULT_RECIPIENTS}", subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-        }
-    }
 }
