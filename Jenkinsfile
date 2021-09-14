@@ -3,7 +3,11 @@ pipeline {
   agent { label 'slave1' }
 //   tools {nodejs "latest"}
   stages {
-    
+    stage('Start') {
+      steps {
+        emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: "${env.DEFAULT_RECIPIENTS}", subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+      }
+    }
     stage('Preflight') {
       steps {
         echo sh(returnStdout: true, script: 'env')
