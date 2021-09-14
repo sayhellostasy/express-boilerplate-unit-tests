@@ -5,7 +5,7 @@ pipeline {
   stages {
     stage('Start') {
       steps {
-        emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: "${env.DEFAULT_RECIPIENTS}", subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+        emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
       }
     }
     stage('Preflight') {
