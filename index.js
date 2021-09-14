@@ -46,7 +46,6 @@ const storageConfig = multer.diskStorage({
 app.use(cors({
     exposedHeaders : "*"
 }));
-
 app.use(bodyParser.json({
     limit: "50mb"
 }))
