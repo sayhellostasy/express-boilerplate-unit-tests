@@ -27,7 +27,8 @@ pipeline {
   }
   post {
         always {
-            emailext body: "${DEFAULT_SUBJECT}", recipientProviders: "${DEFAULT_RECIPIENTS}", subject: "${DEFAULT_CONTENT}"
+            echo 'Sending Notification!'
+            emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: "${env.DEFAULT_RECIPIENTS}", subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
         }
     }
 }
