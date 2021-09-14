@@ -15,6 +15,7 @@ pipeline {
         // sh 'git log --reverse -1'
         sh 'pwd'
         sh 'ls'
+        sh 'npm install'
       }
     }
     stage('test') {
