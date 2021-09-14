@@ -7,9 +7,9 @@ var morgan = require('morgan');
 var fs = require('fs');
 var multer  = require('multer')
 var path = require('path')
-var request = require('request');
-var should = require('chai').should()
-var expect = require('chai').expect
+// var request = require('request');
+// var should = require('chai').should()
+// var expect = require('chai').expect
 require('dotenv').config()
 
 
