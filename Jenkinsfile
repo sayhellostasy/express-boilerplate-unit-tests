@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 pipeline {
-  agent slave1
-  tools {nodejs "latest"}
+  agent { label 'slave2' }
+//   tools {nodejs "latest"}
   stages {
     stage('preflight') {
       steps {
@@ -13,7 +13,8 @@ pipeline {
       steps {
         sh 'npm --version'
         // sh 'git log --reverse -1'
-        sh 'npm install'
+        sh 'pwd'
+        sh 'ls'
       }
     }
     stage('test') {
