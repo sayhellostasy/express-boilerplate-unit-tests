@@ -8,7 +8,6 @@ pipeline {
       steps {
         echo sh(returnStdout: true, script: 'env')
         sh 'node -v'
-        def s()
       }
     }
     stage('Build') {
