@@ -37,12 +37,7 @@ pipeline {
     stage('Preprod') {
         steps {
             def userAborted = false
-            emailext body: "Please go to the console output of ${env.BUILD_URL} input to approve or reject."
-            mimeType: 'text/html'
-            subject: "[Jenkins] Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-            to: 'pourab.karchaudhuri@gmail.com'
-            recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-
+            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}. input to approve or reject.", mimeType: 'text/html', recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
             try{
                 userInput = input submitter = 'vagrant', message: "Do you Approve?"
             }
