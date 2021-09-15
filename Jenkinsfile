@@ -1,18 +1,4 @@
 #!/usr/bin/env groovy
-
-def user
-node {
-  wrap([$class: 'BuildUser']) {
-    user = env.BUILD_USER_ID
-  }
-  
-  emailext mimeType: 'text/html',
-                 subject: "[Jenkins]${currentBuild.fullDisplayName}",
-                 to: "user@xxx.com",
-                 body: '''<a href="${BUILD_URL}input">click to approve</a>'''
-}
-
-
 pipeline {
   agent { label 'slave1' }
 //   tools {nodejs "latest"}
@@ -48,24 +34,36 @@ pipeline {
     //         resourceGroup: "bits-assignment"
     //   }
     // }
-    stage('Preprod'){
-        input{
-            message "Should we continue?"
-            ok "Yes"
+    stage('Preprod') {
+        
+        def userAborted = false
+        emailext body: "Please go to the console output of ${env.BUILD_URL} input to approve or reject."
+        mimeType: 'text/html'
+        subject: "[Jenkins] Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+        to: 'pourab.karchaudhuri@gmail.com'
+        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+
+        try{
+            userInput = input submitter = 'vagrant', message: "Do you Approve?"
         }
-        when{
-            expression { user == 'hardCodeApproverJenkinsId'}
+        catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e){
+            cause = e.causes.get(0)
+            echo "Aborted by " + cause.getUser().toString()
+                userAborted = true
+                echo = "SYSTEM aborted, but looks like timeout period didnt complete. Aborting..."
         }
-        steps{
-            sh "echo 'describe your deployment'"
+        if(userAborted){
+            currentBuild.result = "ABORTED"
+        }
+        else{
+            echo 'Working....'
         }
     }
-    stage('Prod Deploy') {
       steps {
         sh 'echo "Deploying to Production"'
-        // emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-        // echo sh(returnStdout: true, script: 'env')
-        // sh 'node -v'
+        emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+        echo sh(returnStdout: true, script: 'env')
+        sh 'node -v'
       }
     }
   }
