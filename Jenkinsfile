@@ -39,7 +39,7 @@ pipeline {
       
         script {
             def userInput = false
-            userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']])
+            userInput = input(id: 'Proceed1', message: 'Promote to Production?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']])
             echo 'userInput: ' + userInput
 
             if(userInput == true) {
@@ -49,7 +49,13 @@ pipeline {
                 echo "Action was aborted."
             }
 
-        }    
+        }
+        emailext (
+            subject: "Waiting for your Approval! Job: '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+        )   
     }  
 }
     stage('prod') {
