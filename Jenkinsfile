@@ -34,27 +34,23 @@ pipeline {
     //         resourceGroup: "bits-assignment"
     //   }
     // }
-    stage('Preprod') {
-        steps {
-            def userAborted = false
-            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}. input to approve or reject.", mimeType: 'text/html', recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-            try{
-                userInput = input submitter = 'vagrant', message: "Do you Approve?"
+    stage("Stage with input") {
+    steps {
+      def userInput = false
+        script {
+            def userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']])
+            echo 'userInput: ' + userInput
+
+            if(userInput == true) {
+                // do action
+            } else {
+                // not do action
+                echo "Action was aborted."
             }
-            catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e){
-                cause = e.causes.get(0)
-                echo "Aborted by " + cause.getUser().toString()
-                    userAborted = true
-                    echo = "SYSTEM aborted, but looks like timeout period didnt complete. Aborting..."
-            }
-            if(userAborted){
-                currentBuild.result = "ABORTED"
-            }
-            else{
-                echo 'Working....'
-            }
-        }
-    }
+
+        }    
+    }  
+}
     stage('prod') {
       steps {
         sh 'echo "Deploying to Production"'
