@@ -44,5 +44,6 @@ pipeline {
         echo sh(returnStdout: true, script: 'env')
         sh 'node -v'
       }
+    }
   }
 }
