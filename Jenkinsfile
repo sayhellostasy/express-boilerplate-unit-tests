@@ -1,4 +1,18 @@
 #!/usr/bin/env groovy
+
+def user
+node {
+  wrap([$class: 'BuildUser']) {
+    user = env.BUILD_USER_ID
+  }
+  
+  emailext mimeType: 'text/html',
+                 subject: "[Jenkins]${currentBuild.fullDisplayName}",
+                 to: "user@xxx.com",
+                 body: '''<a href="${BUILD_URL}input">click to approve</a>'''
+}
+
+
 pipeline {
   agent { label 'slave1' }
 //   tools {nodejs "latest"}
@@ -34,15 +48,24 @@ pipeline {
     //         resourceGroup: "bits-assignment"
     //   }
     // }
-    stage('Preprod') {
-      input {
-          message:"Do you want to deploy to production?"
-      }
+    stage('Preprod'){
+        input{
+            message "Should we continue?"
+            ok "Yes"
+        }
+        when{
+            expression { user == 'hardCodeApproverJenkinsId'}
+        }
+        steps{
+            sh "echo 'describe your deployment'"
+        }
+    }
+    stage('Prod Deploy') {
       steps {
         sh 'echo "Deploying to Production"'
-        emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-        echo sh(returnStdout: true, script: 'env')
-        sh 'node -v'
+        // emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+        // echo sh(returnStdout: true, script: 'env')
+        // sh 'node -v'
       }
     }
   }
