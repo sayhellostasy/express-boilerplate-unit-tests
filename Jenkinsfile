@@ -35,28 +35,29 @@ pipeline {
     //   }
     // }
     stage('Preprod') {
-        
-        def userAborted = false
-        emailext body: "Please go to the console output of ${env.BUILD_URL} input to approve or reject."
-        mimeType: 'text/html'
-        subject: "[Jenkins] Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-        to: 'pourab.karchaudhuri@gmail.com'
-        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+        steps {
+            def userAborted = false
+            emailext body: "Please go to the console output of ${env.BUILD_URL} input to approve or reject."
+            mimeType: 'text/html'
+            subject: "[Jenkins] Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            to: 'pourab.karchaudhuri@gmail.com'
+            recipientProviders: [[$class: 'CulpritsRecipientProvider']]
 
-        try{
-            userInput = input submitter = 'vagrant', message: "Do you Approve?"
-        }
-        catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e){
-            cause = e.causes.get(0)
-            echo "Aborted by " + cause.getUser().toString()
-                userAborted = true
-                echo = "SYSTEM aborted, but looks like timeout period didnt complete. Aborting..."
-        }
-        if(userAborted){
-            currentBuild.result = "ABORTED"
-        }
-        else{
-            echo 'Working....'
+            try{
+                userInput = input submitter = 'vagrant', message: "Do you Approve?"
+            }
+            catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e){
+                cause = e.causes.get(0)
+                echo "Aborted by " + cause.getUser().toString()
+                    userAborted = true
+                    echo = "SYSTEM aborted, but looks like timeout period didnt complete. Aborting..."
+            }
+            if(userAborted){
+                currentBuild.result = "ABORTED"
+            }
+            else{
+                echo 'Working....'
+            }
         }
     }
     stage('prod') {
