@@ -36,14 +36,14 @@ pipeline {
     // }
     stage("Stage with input") {
     steps {
-        emailext (
+        emailext 
                 attachLog: true,
                 subject: "Waiting for your Approval! Job: '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 mimeType = 'text/html'
                 body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
                             <p>Check console output at &QUOT;<a href='${env.BUILD_URL}/input'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-        )
+        
         script {
             def userInput = false
             userInput = input(id: 'Proceed1', message: 'Promote to Production?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']])
