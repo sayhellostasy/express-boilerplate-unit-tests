@@ -51,10 +51,14 @@ app.use(bodyParser.json({
 }))
 //Set RESTful routes
 
-app.get('/', function(req, res) {
+app.get('/health', function(req, res) {
   res.send("Server Online");
 });
 //Route for GET
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/index.html'));
+});
 
 app.post('/scan', upload.single('card'), function(req, res, next) {
   // console.log(req.file)
