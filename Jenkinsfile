@@ -71,9 +71,9 @@ pipeline {
     stage('Deploy Prod') {
       steps {
           sh 'echo "Deploying to Production"'
-          emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-            azureWebAppPublish appName: "middleware-staging",
-            azureCredentialsId: "azure-staging-deploy",
+          //emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            azureWebAppPublish appName: "production-deploy",
+            azureCredentialsId: "production-deploy",
             publishType: "file",
             filePath: "**/*.*",
             resourceGroup: "bits-assignment"
