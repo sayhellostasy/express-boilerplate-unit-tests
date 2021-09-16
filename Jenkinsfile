@@ -41,7 +41,7 @@ pipeline {
                     subject: "Waiting for your Approval! Job: '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                     mimeType: 'text/html',
                     body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                                <p>Please go to this link and Approve the build to promote to production. </br><a href='${env.BUILD_URL}/input'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
+                                <p>Job has completed dev/test successfully and deployed to Staging! Please go to this link and Approve the build to promote to production. </br><a href='${env.BUILD_URL}/input'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
             script {
@@ -59,15 +59,6 @@ pipeline {
         }  
     }
 
-    // stage('Prod') {
-    //   steps {
-    //     sh 'echo "Deploying to Production"'
-    //     emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-    //     echo sh(returnStdout: true, script: 'env')
-    //     sh 'node -v'
-    //   }
-    // }
-
     stage('Deploy Prod') {
       steps {
           sh 'echo "Deploying to Production"'
@@ -80,4 +71,9 @@ pipeline {
       }
     }
   }
+post {
+        always {
+            echo 'Deployed to Production'
+            emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+    }
 }
