@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 pipeline {
-  agent { label 'slave2' }
+  agent { label 'slave1' }
 //   tools {nodejs "latest"}
   stages {
     stage('Preflight') {
