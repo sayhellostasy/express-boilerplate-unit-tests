@@ -72,7 +72,7 @@ pipeline {
       steps {
           sh 'echo "Deploying to Production"'
           //emailext attachLog: true, body: "${currentBuild.currentResult}: Job ${env.JOB_NAME}, build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}", recipientProviders: [[$class: 'CulpritsRecipientProvider']], subject: "Jenkins Build - ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-            azureWebAppPublish appName: "production-deploy",
+            azureWebAppPublish appName: "middleware-production",
             azureCredentialsId: "production-deploy",
             publishType: "file",
             filePath: "**/*.*",
