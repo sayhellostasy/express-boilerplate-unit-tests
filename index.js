@@ -12,7 +12,6 @@ var should = require('chai').should()
 var expect = require('chai').expect
 require('dotenv').config()
 
-
 //Configuring the Express Middleware
 var app = express();
 
